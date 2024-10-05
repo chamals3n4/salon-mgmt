@@ -26,21 +26,44 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { MoreHorizontal } from "lucide-react";
 import supabase from "@/Config/SupabaseClient";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 export default function Customers() {
-  const [packageName, setPackageName] = useState("");
-  const [packagePrice, setPackagePrice] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCustomers() {
+      try {
+        const { data, error } = await supabase.from("customers").select("*");
+
+        if (error) {
+          console.error("Error fetching data:", error.message);
+        } else {
+          setCustomers(data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCustomers();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { error } = await supabase.from("packages").insert([
+    const { error } = await supabase.from("customers").insert([
       {
-        name: packageName,
-        price: packagePrice,
+        name: name,
+        phone: phone,
       },
     ]);
 
@@ -48,8 +71,9 @@ export default function Customers() {
       console.error("Error inserting package:", error);
     } else {
       console.log("Package added successfully!");
-      setPackageName("");
-      setPackagePrice("");
+      setName("");
+      setPhone("");
+      setDialogOpen(false);
     }
   };
   return (
@@ -62,7 +86,7 @@ export default function Customers() {
                 <div className="flex items-center space-x-4">
                   <CardTitle>Customers</CardTitle>
                   <div>
-                    <Dialog>
+                    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                       <DialogTrigger asChild>
                         <Button variant="outline">Add New Package</Button>
                       </DialogTrigger>
@@ -80,8 +104,8 @@ export default function Customers() {
                             </Label>
                             <Input
                               id="name"
-                              value={packageName}
-                              onChange={(e) => setPackageName(e.target.value)}
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
                               className="col-span-3"
                             />
                           </div>
@@ -91,8 +115,8 @@ export default function Customers() {
                             </Label>
                             <Input
                               id="price"
-                              value={packagePrice}
-                              onChange={(e) => setPackagePrice(e.target.value)}
+                              value={phone}
+                              onChange={(e) => setPhone(e.target.value)}
                               className="col-span-3"
                             />
                           </div>
@@ -118,36 +142,38 @@ export default function Customers() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Ckon Senarathna
-                      </TableCell>
-                      <TableCell className="font-medium md:table-cell">
-                        071711160
-                      </TableCell>
-                      <TableCell className="font-medium md:table-cell">
-                        10000 LKR
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Delete</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
+                    {customers.map((customer) => (
+                      <TableRow key={customer.id}>
+                        <TableCell className="font-medium">
+                          {customer.name}
+                        </TableCell>
+                        <TableCell className="font-medium md:table-cell">
+                          {customer.phone}
+                        </TableCell>
+                        <TableCell className="font-medium md:table-cell">
+                          10000 LKR
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem>Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </CardContent>

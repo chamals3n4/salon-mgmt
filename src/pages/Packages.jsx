@@ -37,19 +37,41 @@ import { MoreHorizontal } from "lucide-react";
 import PackageImage from "../assets/images/package.png";
 
 import supabase from "@/Config/SupabaseClient";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Packages() {
-  const [packageName, setPackageName] = useState("");
-  const [packagePrice, setPackagePrice] = useState("");
+  const [packages, setPackages] = useState([]);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPackages() {
+      try {
+        const { data, error } = await supabase.from("packages").select("*");
+
+        if (error) {
+          console.error("Error fetching data:", error.message);
+        } else {
+          setPackages(data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPackages();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { error } = await supabase.from("packages").insert([
       {
-        name: packageName,
-        price: packagePrice,
+        name: name,
+        price: price,
       },
     ]);
 
@@ -57,8 +79,9 @@ export default function Packages() {
       console.error("Error inserting package:", error);
     } else {
       console.log("Package added successfully!");
-      setPackageName("");
-      setPackagePrice("");
+      setName("");
+      setPrice("");
+      setDialogOpen(false);
     }
   };
 
@@ -72,7 +95,7 @@ export default function Packages() {
                 <div className="flex items-center space-x-4">
                   <CardTitle>Available Packages</CardTitle>
                   <div>
-                    <Dialog>
+                    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                       <DialogTrigger asChild>
                         <Button variant="outline">Add New Package</Button>
                       </DialogTrigger>
@@ -90,8 +113,8 @@ export default function Packages() {
                             </Label>
                             <Input
                               id="name"
-                              value={packageName}
-                              onChange={(e) => setPackageName(e.target.value)}
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
                               className="col-span-3"
                             />
                           </div>
@@ -101,8 +124,8 @@ export default function Packages() {
                             </Label>
                             <Input
                               id="price"
-                              value={packagePrice}
-                              onChange={(e) => setPackagePrice(e.target.value)}
+                              value={price}
+                              onChange={(e) => setPrice(e.target.value)}
                               className="col-span-3"
                             />
                           </div>
@@ -132,38 +155,44 @@ export default function Packages() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow>
-                      <TableCell className="hidden sm:table-cell">
-                        <img
-                          alt="Product image"
-                          className="aspect-square rounded-md object-cover"
-                          height="64"
-                          src={PackageImage}
-                          width="64"
-                        />
-                      </TableCell>
-                      <TableCell className="font-medium">Package 1</TableCell>
-                      <TableCell className="font-medium">250 LKR</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Delete</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
+                    {packages.map((pack4ge) => (
+                      <TableRow key={pack4ge.id}>
+                        <TableCell className="hidden sm:table-cell">
+                          <img
+                            alt="Product image"
+                            className="aspect-square rounded-md object-cover"
+                            height="64"
+                            src={PackageImage}
+                            width="64"
+                          />
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {pack4ge.name}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {pack4ge.price} LKR
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem>Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </CardContent>
