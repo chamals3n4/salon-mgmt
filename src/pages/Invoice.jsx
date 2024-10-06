@@ -16,6 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
@@ -30,6 +32,7 @@ export default function Invoice() {
     { id: "", price: "" },
   ]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [paymentStatus, setPaymentStatus] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -92,7 +95,6 @@ export default function Invoice() {
     setTotalAmount(total);
   }, [selectedPackages]);
 
-  // Handle form submission to create invoice
   const handleSubmit = async () => {
     if (!selectedCustomer || selectedPackages.length === 0) {
       alert("Please select a customer and at least one package.");
@@ -103,7 +105,13 @@ export default function Invoice() {
       // Insert into invoices table
       const { data: invoiceData, error: invoiceError } = await supabase
         .from("invoices")
-        .insert([{ customer_id: selectedCustomer, amount: totalAmount }])
+        .insert([
+          {
+            customer_id: selectedCustomer,
+            amount: totalAmount,
+            payment_status: paymentStatus,
+          },
+        ])
         .select();
 
       if (invoiceError) throw invoiceError;
@@ -129,6 +137,7 @@ export default function Invoice() {
       setSelectedCustomer("");
       setSelectedPackages([{ id: "", price: "" }]);
       setTotalAmount(0);
+      setPaymentStatus(false); // Reset payment status
     } catch (error) {
       console.error("Error creating invoice:", error.message);
     }
@@ -226,20 +235,27 @@ export default function Invoice() {
             )}`}</span>
           </div>
 
+          <RadioGroup
+            value={paymentStatus ? "received" : "not_received"}
+            onValueChange={(value) => setPaymentStatus(value === "received")}
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="received" id="r1" />
+              <Label htmlFor="r1">Payment Received</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="not_received" id="r2" />
+              <Label htmlFor="r2">Payment Not Received</Label>
+            </div>
+          </RadioGroup>
+
           <Button
             type="button"
             onClick={handleSubmit}
-            className="w-full bg-green-500 hover:bg-green-400 mt-4"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 mt-4"
           >
             Create Invoice
           </Button>
-        </div>
-
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="#" className="underline">
-            Sign in
-          </Link>
         </div>
       </CardContent>
     </Card>

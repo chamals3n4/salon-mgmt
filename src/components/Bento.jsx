@@ -1,5 +1,6 @@
 import img1 from "../assets/images/img1.jpeg";
 import img2 from "../assets/images/img2.jpeg";
+import salon from "../assets/images/salon.jpeg";
 
 export default function Bento() {
   return (
@@ -93,7 +94,7 @@ export default function Bento() {
                 <div className="absolute inset-x-10 bottom-0 top-10 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw]  bg-gray-900 shadow-2xl">
                   <img
                     className="size-full object-cover object-top"
-                    src={img2}
+                    src={salon}
                     alt=""
                   />
                 </div>

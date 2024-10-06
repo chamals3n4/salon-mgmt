@@ -12,6 +12,7 @@ const user = {
 
 const navigation = [
   { name: "Overview", href: "/dashboard" },
+  { name: "Invoices", href: "/dashboard/invoices" },
   { name: "Packages", href: "/dashboard/packages" },
   { name: "Customers", href: "/dashboard/customers" },
 ];
@@ -31,14 +32,16 @@ export default function StackedLayout({ children }) {
 
   return (
     <div className="min-h-full">
-      <Disclosure as="nav" className="bg-gray-600">
+      <Disclosure as="nav" className="bg-emerald-500">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <h1 className="font-bold text-2xl text-white">Salon Co.</h1>
+                    <h1 className="font-bold text-2xl text-white">
+                      Salon K2 - Admin Panel
+                    </h1>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
