@@ -7,18 +7,25 @@ import Project from "./pages/Project";
 import Orders from "./pages/Orders";
 import Packages from "./pages/Packages";
 import Customers from "./pages/Customers";
-import SingleCustomer from "./pages/SingleCustomer";
+import SingleCustomer from "./pages/CustomerProfile";
 import Invoice from "./pages/Invoice";
 import Login from "./pages/Login";
-
+import CreateItem from "./pages/CreateItem";
+import CustomerProfile from "./pages/CustomerProfile";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ViewInvoices from "./pages/ViewInvoices";
+import CustomerLogin from "./pages/CustomerLogin";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/customer/login" element={<CustomerLogin />} />
+        <Route
+          path="/customer/profile/:phoneNumber"
+          element={<CustomerProfile />}
+        />
         <Route path="/login" element={<Login />} />
         <Route
           path="/*"
@@ -33,14 +40,14 @@ function App() {
                     element={<ViewInvoices />}
                   />
                   <Route path="/dashboard/invoice" element={<Invoice />} />
+                  <Route
+                    path="/dashboard/create-item"
+                    element={<CreateItem />}
+                  />
                   <Route path="/dashboard/customers" element={<Customers />} />
                   <Route path="/dashboard/packages" element={<Packages />} />
                   <Route path="/dashboard/projects" element={<Project />} />
                   <Route path="/dashboard/orders" element={<Orders />} />
-                  <Route
-                    path="/dashboard/customers/1"
-                    element={<SingleCustomer />}
-                  />
                 </Routes>
               </StackedLayout>
             </ProtectedRoute>

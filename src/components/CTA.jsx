@@ -38,7 +38,6 @@ export default function CTA() {
               </div>
               <dt className="mt-4 font-semibold text-gray-900">Location</dt>
               <dd className="mt-2 leading-7 text-gray-600">
-                Ananda Niwasa, <br />
                 Bamunapotha,Wellawa
               </dd>
             </div>
@@ -50,7 +49,7 @@ export default function CTA() {
                 />
               </div>
               <dt className="mt-4 font-semibold text-gray-900">Phone Number</dt>
-              <dd className="mt-2 leading-7 text-gray-600">071 7110 160</dd>
+              <dd className="mt-2 leading-7 text-gray-600">0783060632</dd>
             </div>
           </dl>
         </div>
