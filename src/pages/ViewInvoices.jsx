@@ -59,7 +59,6 @@ export default function ViewInvoices() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice ID</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Amount</TableHead>
@@ -69,7 +68,6 @@ export default function ViewInvoices() {
           <TableBody>
             {invoices.map((invoice) => (
               <TableRow key={invoice.id}>
-                <TableCell>{invoice.id}</TableCell>
                 <TableCell>
                   {new Date(invoice.date).toLocaleDateString()}
                 </TableCell>

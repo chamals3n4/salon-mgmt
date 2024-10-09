@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { Users, DollarSign, CreditCard } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -31,9 +32,24 @@ export default function Overview() {
   const { total_revenue, daily_revenue, number_of_customers } =
     overviewData || {};
 
+  // TODO : Update Open or Close and show that on the Landing Page
   return (
     <>
       <div className="grid gap-4 md:grid-cols-4 p-8  md:gap-8 lg:grid-cols-4">
+        <Card x-chunk="dashboard-01-chunk-0">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Salon Open || Closed
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              <Switch id="airplane-mode" />
+            </div>
+          </CardContent>
+        </Card>
+
         <Link to="/dashboard/invoice">
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

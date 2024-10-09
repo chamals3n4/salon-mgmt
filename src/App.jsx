@@ -10,17 +10,18 @@ import Customers from "./pages/Customers";
 import SingleCustomer from "./pages/CustomerProfile";
 import Invoice from "./pages/Invoice";
 import Login from "./pages/Login";
-import CreateItem from "./pages/CreateItem";
 import CustomerProfile from "./pages/CustomerProfile";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ViewInvoices from "./pages/ViewInvoices";
 import CustomerLogin from "./pages/CustomerLogin";
+import AddItem from "./pages/AddItem";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
+
         <Route path="/customer/login" element={<CustomerLogin />} />
         <Route
           path="/customer/profile/:phoneNumber"
@@ -34,19 +35,14 @@ function App() {
               <StackedLayout>
                 <Routes>
                   <Route path="/dashboard/" element={<Overview />} />
-
                   <Route
                     path="/dashboard/invoices"
                     element={<ViewInvoices />}
                   />
+                  <Route path="/dashboard/add-item" element={<AddItem />} />
                   <Route path="/dashboard/invoice" element={<Invoice />} />
-                  <Route
-                    path="/dashboard/create-item"
-                    element={<CreateItem />}
-                  />
                   <Route path="/dashboard/customers" element={<Customers />} />
                   <Route path="/dashboard/packages" element={<Packages />} />
-                  <Route path="/dashboard/projects" element={<Project />} />
                   <Route path="/dashboard/orders" element={<Orders />} />
                 </Routes>
               </StackedLayout>

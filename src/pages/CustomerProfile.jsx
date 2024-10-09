@@ -27,6 +27,7 @@ export default function CustomerProfile() {
     <div className="max-w-lg mx-auto p-6">
       <h2 className="text-2xl font-semibold mb-4">Customer Profile</h2>
       {customerData ? (
+        // TODO : Fetch the invoices of customer to the table
         <div>
           <p>
             <strong>Name:</strong> {customerData.name}

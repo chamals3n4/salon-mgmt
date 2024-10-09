@@ -15,6 +15,7 @@ const navigation = [
   { name: "Invoices", href: "/dashboard/invoices" },
   { name: "Packages", href: "/dashboard/packages" },
   { name: "Customers", href: "/dashboard/customers" },
+  { name: "Create Item", href: "/dashboard/add-item" },
 ];
 
 const userNavigation = [

@@ -59,7 +59,7 @@ export default function Items() {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <a
-                      href={`https://wa.me/94717110160?text=I%20need%20to%20buy%20this%20${encodeURIComponent(
+                      href={`https://wa.me/94783060632?text=I%20need%20to%20buy%20this%20${encodeURIComponent(
                         product.name
                       )}`}
                       target="_blank"
