@@ -3,11 +3,9 @@ import StackedLayout from "./layouts/StackedLayout";
 
 import Landing from "./pages/Landing";
 import Overview from "./pages/Overview";
-import Project from "./pages/Project";
 import Orders from "./pages/Orders";
 import Packages from "./pages/Packages";
 import Customers from "./pages/Customers";
-import SingleCustomer from "./pages/CustomerProfile";
 import Invoice from "./pages/Invoice";
 import Login from "./pages/Login";
 import CustomerProfile from "./pages/CustomerProfile";

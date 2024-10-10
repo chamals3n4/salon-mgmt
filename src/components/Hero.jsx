@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import supabase from "@/Config/SupabaseClient";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -10,7 +11,26 @@ const navigation = [
 ];
 
 export default function Hero() {
+  const [isOpen, setIsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Subscribe to the 'salon-status' broadcast channel
+    const channel = supabase.channel("salon-status");
+
+    // Listen for 'status-change' events
+    channel.on("broadcast", { event: "status-change" }, (payload) => {
+      setIsOpen(payload.payload.is_open); // Update the status based on the event payload
+    });
+
+    // Join the channel
+    channel.subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <div className="bg-white">
@@ -95,6 +115,7 @@ export default function Hero() {
             </div>
           </div>
           <div className="text-center">
+            <p>The salon is currently {isOpen ? "Open" : "Closed"}.</p>
             <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Beauty Services for Everyone Everyday
             </h1>
