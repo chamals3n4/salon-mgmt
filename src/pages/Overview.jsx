@@ -49,35 +49,48 @@ export default function Overview() {
     //     setLoading(false);
     //   }
     // }
+
+    const channel = supabase.channel("salon-status");
+    channel.on("broadcast", { event: "status-change" }, (payload) => {
+      setIsOpen(payload.payload.is_open);
+    });
+    channel.subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  // const handleToggle = async (checked) => {
+  // const handleToggle = (checked) => {
   //   setIsOpen(checked);
 
-  //   try {
-  //     const { error } = await supabase
-  //       .from("overview")
-  //       .update({ isOpen: checked })
-  //       .eq("id", 1);
-
-  //     if (error) {
-  //       console.error("Error updating status:", error.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating status:", error.message);
-  //   }
+  //   // Create a broadcast channel and send the status
+  //   const channel = supabase.channel("salon-status");
+  //   channel.send({
+  //     type: "broadcast",
+  //     event: "status-change",
+  //     payload: { is_open: checked },
+  //   });
   // };
 
-  const handleToggle = (checked) => {
+  const handleToggle = async (checked) => {
     setIsOpen(checked);
+    try {
+      const { error } = await supabase
+        .from("overview")
+        .update({ is_open: checked })
+        .eq("id", 1);
+      if (error) throw error;
 
-    // Create a broadcast channel and send the status
-    const channel = supabase.channel("salon-status");
-    channel.send({
-      type: "broadcast",
-      event: "status-change",
-      payload: { is_open: checked },
-    });
+      const channel = supabase.channel("salon-status");
+      channel.send({
+        type: "broadcast",
+        event: "status-change",
+        payload: { is_open: checked },
+      });
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
   };
 
   const { total_revenue, daily_revenue, number_of_customers } =

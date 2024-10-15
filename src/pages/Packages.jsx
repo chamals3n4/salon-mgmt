@@ -130,7 +130,7 @@ export default function Packages() {
                             />
                           </div>
                           <DialogFooter>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit">Add Package</Button>
                           </DialogFooter>
                         </form>
                       </DialogContent>

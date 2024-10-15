@@ -88,11 +88,11 @@ export default function Customers() {
                   <div>
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                       <DialogTrigger asChild>
-                        <Button variant="outline">Add New Package</Button>
+                        <Button variant="outline">Add New Customer</Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px] max-w-[90%] p-6">
                         <DialogHeader>
-                          <DialogTitle>Add New Package</DialogTitle>
+                          <DialogTitle>Add New Customer</DialogTitle>
                         </DialogHeader>
                         <form
                           onSubmit={handleSubmit}
@@ -111,7 +111,7 @@ export default function Customers() {
                           </div>
                           <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="price" className="text-right">
-                              Price
+                              Phone
                             </Label>
                             <Input
                               id="price"
@@ -121,7 +121,7 @@ export default function Customers() {
                             />
                           </div>
                           <DialogFooter>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit">Add Customer</Button>
                           </DialogFooter>
                         </form>
                       </DialogContent>

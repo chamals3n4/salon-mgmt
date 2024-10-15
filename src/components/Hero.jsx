@@ -3,6 +3,8 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import supabase from "@/Config/SupabaseClient";
 
+import Banner from "./Banner";
+
 const navigation = [
   { name: "Product", href: "#" },
   { name: "Features", href: "#" },
@@ -35,18 +37,7 @@ export default function Hero() {
   return (
     <div className="bg-white">
       <header className="absolute inset-x-0 top-0 z-50">
-        <nav aria-label="Global" className="flex items-center p-6 lg:px-8">
-          <div className="flex-grow flex justify-center">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-              />
-            </a>
-          </div>
-        </nav>
+        <Banner />
         <Dialog
           open={mobileMenuOpen}
           onClose={setMobileMenuOpen}
@@ -91,7 +82,7 @@ export default function Hero() {
         </Dialog>
       </header>
 
-      <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="relative isolate px-6 pt-9 lg:px-8">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -115,7 +106,6 @@ export default function Hero() {
             </div>
           </div>
           <div className="text-center">
-            <p>The salon is currently {isOpen ? "Open" : "Closed"}.</p>
             <h1 className="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               Beauty Services for Everyone Everyday
             </h1>
